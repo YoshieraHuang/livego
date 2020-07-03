@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gwuhaolin/livego/utils/uid"
+	"github.com/Yoshiera/livego/utils/uid"
 
-	"github.com/gwuhaolin/livego/av"
-	"github.com/gwuhaolin/livego/configure"
-	"github.com/gwuhaolin/livego/container/flv"
-	"github.com/gwuhaolin/livego/protocol/rtmp/core"
+	"github.com/Yoshiera/livego/av"
+	"github.com/Yoshiera/livego/configure"
+	"github.com/Yoshiera/livego/container/flv"
+	"github.com/Yoshiera/livego/protocol/rtmp/core"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -26,6 +26,11 @@ const (
 var (
 	readTimeout  = configure.Config.GetInt("read_timeout")
 	writeTimeout = configure.Config.GetInt("write_timeout")
+)
+
+var (
+	// ErrInvalidKey means invalid key
+	ErrInvalidKey = fmt.Errorf("invalid key")
 )
 
 // Client is the rtmp client
@@ -129,17 +134,13 @@ func (s *Server) handleConn(conn *core.Conn) error {
 
 	log.Debugf("handleConn: IsPublisher=%v", connServer.IsPublisher())
 	if connServer.IsPublisher() {
-		channel, err := configure.RoomKeys.GetChannel(name)
-		if err != nil {
+		channel := configure.GetChannel(name)
+		if channel == "" {
 			err := fmt.Errorf("invalid key")
 			conn.Close()
-			log.Error("CheckKey err: ", err)
 			return err
 		}
 		connServer.PublishInfo.Name = channel
-		if pushlist, ret := configure.GetStaticPushURLList(appname); ret && (pushlist != nil) {
-			log.Debugf("GetStaticPushUrlList: %v", pushlist)
-		}
 		reader := NewVirReader(connServer)
 		s.handler.HandleReader(reader)
 		log.Debugf("new publisher: %+v", reader.Info())

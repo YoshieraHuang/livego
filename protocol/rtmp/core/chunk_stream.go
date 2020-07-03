@@ -4,8 +4,8 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/gwuhaolin/livego/av"
-	"github.com/gwuhaolin/livego/utils/pool"
+	"github.com/Yoshiera/livego/av"
+	"github.com/Yoshiera/livego/utils/pool"
 )
 
 // ChunkStream is the chunk stream

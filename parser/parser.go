@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/gwuhaolin/livego/av"
-	"github.com/gwuhaolin/livego/parser/aac"
-	"github.com/gwuhaolin/livego/parser/h264"
-	"github.com/gwuhaolin/livego/parser/mp3"
+	"github.com/Yoshiera/livego/av"
+	"github.com/Yoshiera/livego/parser/aac"
+	"github.com/Yoshiera/livego/parser/h264"
+	"github.com/Yoshiera/livego/parser/mp3"
 )
 
 var (

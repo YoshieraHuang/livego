@@ -1,8 +1,8 @@
 package cache
 
 import (
-	"github.com/gwuhaolin/livego/av"
-	"github.com/gwuhaolin/livego/configure"
+	"github.com/Yoshiera/livego/av"
+	"github.com/Yoshiera/livego/configure"
 )
 
 // Cache is a cache of rtmp

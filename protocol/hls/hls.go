@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gwuhaolin/livego/configure"
+	"github.com/Yoshiera/livego/configure"
 
-	"github.com/gwuhaolin/livego/av"
+	"github.com/Yoshiera/livego/av"
 
 	cmap "github.com/orcaman/concurrent-map"
 	log "github.com/sirupsen/logrus"

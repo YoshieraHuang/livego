@@ -7,16 +7,15 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/gwuhaolin/livego/configure"
-	"github.com/gwuhaolin/livego/protocol/api"
-	"github.com/gwuhaolin/livego/protocol/hls"
-	"github.com/gwuhaolin/livego/protocol/httpflv"
-	"github.com/gwuhaolin/livego/protocol/rtmp"
+	"github.com/Yoshiera/livego/configure"
+	"github.com/Yoshiera/livego/protocol/hls"
+	"github.com/Yoshiera/livego/protocol/httpflv"
+	"github.com/Yoshiera/livego/protocol/rtmp"
 
 	log "github.com/sirupsen/logrus"
 )
 
-var VERSION = "master"
+const version = "master"
 
 func startHls() *hls.Server {
 	hlsAddr := configure.Config.GetString("hls_addr")
@@ -39,6 +38,27 @@ func startHls() *hls.Server {
 }
 
 var rtmpAddr string
+
+func startHTTPFlv(stream *rtmp.Streams) {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Error("HTTP-FLV server panic: ", r)
+		}
+	}()
+
+	httpflvAddr := configure.Config.GetString("httpflv_addr")
+
+	flvListen, err := net.Listen("tcp", httpflvAddr)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	hdlServer := httpflv.NewServer(stream)
+	go func() {
+		log.Info("HTTP-FLV listen On ", httpflvAddr)
+		hdlServer.Serve(flvListen)
+	}()
+}
 
 func startRtmp(stream *rtmp.Streams, hlsServer *hls.Server) {
 	rtmpAddr = configure.Config.GetString("rtmp_addr")
@@ -67,47 +87,6 @@ func startRtmp(stream *rtmp.Streams, hlsServer *hls.Server) {
 	rtmpServer.Serve(rtmpListen)
 }
 
-func startHTTPFlv(stream *rtmp.Streams) {
-	httpflvAddr := configure.Config.GetString("httpflv_addr")
-
-	flvListen, err := net.Listen("tcp", httpflvAddr)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	hdlServer := httpflv.NewServer(stream)
-	go func() {
-		defer func() {
-			if r := recover(); r != nil {
-				log.Error("HTTP-FLV server panic: ", r)
-			}
-		}()
-		log.Info("HTTP-FLV listen On ", httpflvAddr)
-		hdlServer.Serve(flvListen)
-	}()
-}
-
-func startAPI(stream *rtmp.Streams) {
-	apiAddr := configure.Config.GetString("api_addr")
-
-	if apiAddr != "" {
-		opListen, err := net.Listen("tcp", apiAddr)
-		if err != nil {
-			log.Fatal(err)
-		}
-		opServer := api.NewServer(stream, rtmpAddr)
-		go func() {
-			defer func() {
-				if r := recover(); r != nil {
-					log.Error("HTTP-API server panic: ", r)
-				}
-			}()
-			log.Info("HTTP-API listen On ", apiAddr)
-			opServer.Serve(opListen)
-		}()
-	}
-}
-
 func init() {
 	log.SetFormatter(&log.TextFormatter{
 		FullTimestamp: true,
@@ -133,12 +112,11 @@ func main() {
     | |___| |\ V /  __/ |_| | (_) |
     |_____|_| \_/ \___|\____|\___/ 
         version: %s
-	`, VERSION)
+	`, version)
 
 	stream := rtmp.NewStreams()
 	hlsServer := startHls()
+	// startAPI(stream)
 	startHTTPFlv(stream)
-	startAPI(stream)
-
 	startRtmp(stream, hlsServer)
 }

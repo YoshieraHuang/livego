@@ -15,7 +15,8 @@
 
 # # API Options
 # api_addr: ":8090"
+level: "debug"
+flv_dir: "./tmp"
 server:
-- appname: live
-  live: true
-  hls: true
+  appname: "live"
+  key: "345678"

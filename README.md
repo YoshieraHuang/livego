@@ -4,8 +4,8 @@
 
 [中文](./README_cn.md)
 
-[![Test](https://github.com/gwuhaolin/livego/workflows/Test/badge.svg)](https://github.com/gwuhaolin/livego/actions?query=workflow%3ATest)
-[![Release](https://github.com/gwuhaolin/livego/workflows/Release/badge.svg)](https://github.com/gwuhaolin/livego/actions?query=workflow%3ARelease)
+[![Test](https://github.com/Yoshiera/livego/workflows/Test/badge.svg)](https://github.com/Yoshiera/livego/actions?query=workflow%3ATest)
+[![Release](https://github.com/Yoshiera/livego/workflows/Release/badge.svg)](https://github.com/Yoshiera/livego/actions?query=workflow%3ARelease)
 
 Simple and efficient live broadcast server:
 - Very simple to install and use;
@@ -28,13 +28,13 @@ Simple and efficient live broadcast server:
 - MP3
 
 ## Installation
-After directly downloading the compiled [binary file](https://github.com/gwuhaolin/livego/releases), execute it on the command line.
+After directly downloading the compiled [binary file](https://github.com/Yoshiera/livego/releases), execute it on the command line.
 
 #### Boot from Docker
-Run `docker run -p 1935:1935 -p 7001:7001 -p 7002:7002 -p 8090:8090 -d gwuhaolin/livego` to start
+Run `docker run -p 1935:1935 -p 7001:7001 -p 7002:7002 -p 8090:8090 -d Yoshiera/livego` to start
 
 #### Compile from source
-1. Download the source code `git clone https://github.com/gwuhaolin/livego.git`
+1. Download the source code `git clone https://github.com/Yoshiera/livego.git`
 2. Go to the livego directory and execute `go build` or `make build`
 
 ## Use
@@ -62,6 +62,6 @@ Usage of ./livego:
       --rtmp_addr string      RTMP server listen address
 ```
 
-### [Use with flv.js](https://github.com/gwuhaolin/blog/issues/3)
+### [Use with flv.js](https://github.com/Yoshiera/blog/issues/3)
 
 Interested in Golang? Please see [Golang Chinese Learning Materials Summary](http://go.wuhaolin.cn/)

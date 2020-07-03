@@ -22,6 +22,6 @@ jobs:
       - name: Docker release
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: gwuhaolin/livego
+          name: Yoshiera/livego
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}

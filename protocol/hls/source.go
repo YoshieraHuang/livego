@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/gwuhaolin/livego/configure"
+	"github.com/Yoshiera/livego/configure"
 
-	"github.com/gwuhaolin/livego/av"
-	"github.com/gwuhaolin/livego/container/flv"
-	"github.com/gwuhaolin/livego/container/ts"
-	"github.com/gwuhaolin/livego/parser"
+	"github.com/Yoshiera/livego/av"
+	"github.com/Yoshiera/livego/container/flv"
+	"github.com/Yoshiera/livego/container/ts"
+	"github.com/Yoshiera/livego/parser"
 
 	log "github.com/sirupsen/logrus"
 )
