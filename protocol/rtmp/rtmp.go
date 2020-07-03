@@ -136,6 +136,7 @@ func (s *Server) handleConn(conn *core.Conn) error {
 	if connServer.IsPublisher() {
 		channel := configure.GetChannel(name)
 		if channel == "" {
+			log.Debugf("new reader: %v", name)
 			err := fmt.Errorf("invalid key")
 			conn.Close()
 			return err

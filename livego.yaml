@@ -9,14 +9,8 @@
 # rtmp_addr: ":1935"
 # read_timeout: 10
 # write_timeout: 10
-
-# # HLS Options
-# hls_addr: ":7002"
-
-# # API Options
-# api_addr: ":8090"
 level: "debug"
-flv_dir: "./tmp"
 server:
   appname: "live"
-  key: "345678"
+  key: "123456"
+  channel: "test"
