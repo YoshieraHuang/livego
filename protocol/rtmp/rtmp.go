@@ -103,8 +103,7 @@ func (s *Server) Serve(listener net.Listener) (err error) {
 			return
 		}
 		conn := core.NewConn(netconn, 4*1024)
-		log.Debug("new client, connect remote: ", conn.RemoteAddr().String(),
-			"local:", conn.LocalAddr().String())
+		log.Infof("new client, connect remote: %s, local: %s", conn.RemoteAddr().String(), conn.LocalAddr().String())
 		go s.handleConn(conn)
 	}
 }
@@ -136,10 +135,8 @@ func (s *Server) handleConn(conn *core.Conn) error {
 	if connServer.IsPublisher() {
 		channel := configure.GetChannel(name)
 		if channel == "" {
-			log.Debugf("new reader: %v", name)
-			err := fmt.Errorf("invalid key")
 			conn.Close()
-			return err
+			return ErrInvalidKey
 		}
 		connServer.PublishInfo.Name = channel
 		reader := NewVirReader(connServer)

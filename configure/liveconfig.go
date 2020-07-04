@@ -45,7 +45,6 @@ func init() {
 	Config.SetDefault("read_timeout", 10)
 	Config.SetDefault("write_timeout", 10)
 	Config.SetDefault("gop_num", 1)
-	Config.SetDefault("hls_keep_after_end", false)
 	Config.SetDefault("server.name", "live")
 	Config.SetDefault("server.channel", "movie")
 	Config.SetDefault("server.key", "123456")

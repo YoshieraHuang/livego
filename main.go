@@ -17,25 +17,25 @@ import (
 
 const version = "master"
 
-func startHls() *hls.Server {
-	hlsAddr := configure.Config.GetString("hls_addr")
-	hlsListen, err := net.Listen("tcp", hlsAddr)
-	if err != nil {
-		log.Fatal(err)
-	}
+// func startHls() *hls.Server {
+// 	hlsAddr := configure.Config.GetString("hls_addr")
+// 	hlsListen, err := net.Listen("tcp", hlsAddr)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
 
-	hlsServer := hls.NewServer()
-	go func() {
-		defer func() {
-			if r := recover(); r != nil {
-				log.Error("HLS server panic: ", r)
-			}
-		}()
-		log.Info("HLS listen On ", hlsAddr)
-		hlsServer.Serve(hlsListen)
-	}()
-	return hlsServer
-}
+// 	hlsServer := hls.NewServer()
+// 	go func() {
+// 		defer func() {
+// 			if r := recover(); r != nil {
+// 				log.Error("HLS server panic: ", r)
+// 			}
+// 		}()
+// 		log.Info("HLS listen On ", hlsAddr)
+// 		hlsServer.Serve(hlsListen)
+// 	}()
+// 	return hlsServer
+// }
 
 var rtmpAddr string
 
@@ -70,13 +70,7 @@ func startRtmp(stream *rtmp.Streams, hlsServer *hls.Server) {
 
 	var rtmpServer *rtmp.Server
 
-	if hlsServer == nil {
-		rtmpServer = rtmp.NewServer(stream, nil)
-		log.Info("HLS server disable....")
-	} else {
-		rtmpServer = rtmp.NewServer(stream, hlsServer)
-		log.Info("HLS server enable....")
-	}
+	rtmpServer = rtmp.NewServer(stream, hlsServer)
 
 	defer func() {
 		if r := recover(); r != nil {

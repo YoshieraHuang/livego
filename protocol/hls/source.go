@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Yoshiera/livego/configure"
-
 	"github.com/Yoshiera/livego/av"
 	"github.com/Yoshiera/livego/container/flv"
 	"github.com/Yoshiera/livego/container/ts"
@@ -192,7 +190,7 @@ func (source *Source) cleanup() {
 // Close closes the source
 func (source *Source) Close(err error) {
 	log.Debug("hls source closed: ", source.info)
-	if !source.closed && !configure.Config.GetBool("hls_keep_after_end") {
+	if !source.closed {
 		source.cleanup()
 	}
 	source.closed = true
