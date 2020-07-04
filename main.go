@@ -17,26 +17,6 @@ import (
 
 const version = "master"
 
-// func startHls() *hls.Server {
-// 	hlsAddr := configure.Config.GetString("hls_addr")
-// 	hlsListen, err := net.Listen("tcp", hlsAddr)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	hlsServer := hls.NewServer()
-// 	go func() {
-// 		defer func() {
-// 			if r := recover(); r != nil {
-// 				log.Error("HLS server panic: ", r)
-// 			}
-// 		}()
-// 		log.Info("HLS listen On ", hlsAddr)
-// 		hlsServer.Serve(hlsListen)
-// 	}()
-// 	return hlsServer
-// }
-
 var rtmpAddr string
 
 func startHTTPFlv(stream *rtmp.Streams) {
@@ -56,6 +36,9 @@ func startHTTPFlv(stream *rtmp.Streams) {
 	hdlServer := httpflv.NewServer(stream)
 	go func() {
 		log.Info("HTTP-FLV listen On ", httpflvAddr)
+		serverName := configure.Config.GetString("server.name")
+		serverChannel := configure.Config.GetString("server.channel")
+		log.Infof("Address to pull stream: http://localhost%s/%s/%s.flv", httpflvAddr, serverName, serverChannel)
 		hdlServer.Serve(flvListen)
 	}()
 }
@@ -78,6 +61,9 @@ func startRtmp(stream *rtmp.Streams, hlsServer *hls.Server) {
 		}
 	}()
 	log.Info("RTMP Listen On ", rtmpAddr)
+	serverName := configure.Config.GetString("server.name")
+	serverKey := configure.Config.GetString("server.key")
+	log.Infof("Addr to push stream: rtmp://localhost%s/%s/%s", rtmpAddr, serverName, serverKey)
 	rtmpServer.Serve(rtmpListen)
 }
 

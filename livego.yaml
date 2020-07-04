@@ -13,4 +13,4 @@
 server:
   appname: "live"
   key: "123456"
-  channel: "test"
+  channel: "movie"
