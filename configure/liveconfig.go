@@ -8,18 +8,22 @@ import (
 	"github.com/spf13/viper"
 )
 
+type server struct {
+	Name    string `mapstructure:"name"`
+	Channel string `mapstructure:"channel"`
+	Key     string `mapstructure:"key"`
+}
+
 // ServerCfg is the configuration of server
 type ServerCfg struct {
-	Level         string `mapstructure:"level"`
-	FLVDir        string `mapstructure:"flv_dir"`
-	RTMPAddr      string `mapstructure:"rtmp_addr"`
-	HTTPFLVAddr   string `mapstructure:"httpflv_addr"`
-	ReadTimeout   int    `mapstructure:"read_timeout"`
-	WriteTimeout  int    `mapstructure:"write_timeout"`
-	GopNum        int    `mapstructure:"gop_num"`
-	ServerName    string `mapstructure:"server_name"`
-	ServerChannel string `mapstructure:"server_channel"`
-	ServerKey     string `mapstructure:"server_key"`
+	Level        string `mapstructure:"level"`
+	FLVDir       string `mapstructure:"flv_dir"`
+	RTMPAddr     string `mapstructure:"rtmp_addr"`
+	HTTPFLVAddr  string `mapstructure:"httpflv_addr"`
+	ReadTimeout  int    `mapstructure:"read_timeout"`
+	WriteTimeout int    `mapstructure:"write_timeout"`
+	GopNum       int    `mapstructure:"gop_num"`
+	Server       server `mapstructure:"server"`
 }
 
 // Config is the configuration of this livego
@@ -33,7 +37,7 @@ func initLog() {
 }
 
 var (
-	configFileFlag = flag.String("config", "livego.yaml", "config file")
+	configFileFlag = flag.String("config", "livego", "config file")
 )
 
 func init() {
@@ -51,10 +55,13 @@ func init() {
 
 	flag.Parse()
 
-	Config.SetConfigFile(*configFileFlag)
+	Config.SetConfigName(*configFileFlag)
 	Config.AddConfigPath("/livego")
 	Config.AddConfigPath("./")
-	Config.ReadInConfig()
+	if err := Config.ReadInConfig(); err != nil {
+		log.Error("config:", err.Error())
+		log.Info("use default config")
+	}
 	// Log
 	initLog()
 

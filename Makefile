@@ -4,7 +4,6 @@ GOCLEAN = $(GOCMD) clean
 GOTEST = $(GOCMD) test
 GOGET = $(GOCMD) get
 BINARY_NAME = livego
-BINARY_UNIX = $(BINARY_NAME)_unix
 
 DOCKER_ACC ?= Yoshiera
 DOCKER_REPO ?= livego
@@ -29,7 +28,7 @@ run: build
 	./$(BINARY_NAME)
 
 build-linux:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_UNIX) -v
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_NAME) -v
 
 dockerize:
 	docker build -t $(DOCKER_ACC)/$(DOCKER_REPO):$(TAG) .
