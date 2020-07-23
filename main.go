@@ -5,7 +5,6 @@ import (
 	"net"
 	"path"
 	"runtime"
-	"time"
 
 	"github.com/Yoshiera/livego/configure"
 	"github.com/Yoshiera/livego/protocol/hls"
@@ -20,17 +19,11 @@ const version = "master"
 var rtmpAddr string
 
 func startHTTPFlv(stream *rtmp.Streams) {
-	defer func() {
-		if r := recover(); r != nil {
-			log.Error("HTTP-FLV server panic: ", r)
-		}
-	}()
-
 	httpflvAddr := configure.Config.GetString("httpflv_addr")
 
 	flvListen, err := net.Listen("tcp", httpflvAddr)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	hdlServer := httpflv.NewServer(stream)
@@ -48,18 +41,13 @@ func startRtmp(stream *rtmp.Streams, hlsServer *hls.Server) {
 
 	rtmpListen, err := net.Listen("tcp", rtmpAddr)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	var rtmpServer *rtmp.Server
 
 	rtmpServer = rtmp.NewServer(stream, hlsServer)
 
-	defer func() {
-		if r := recover(); r != nil {
-			log.Error("RTMP server panic: ", r)
-		}
-	}()
 	log.Info("RTMP Listen On ", rtmpAddr)
 	serverName := configure.Config.GetString("server.name")
 	serverKey := configure.Config.GetString("server.key")
@@ -78,13 +66,6 @@ func init() {
 }
 
 func main() {
-	defer func() {
-		if r := recover(); r != nil {
-			log.Error("livego panic: ", r)
-			time.Sleep(1 * time.Second)
-		}
-	}()
-
 	log.Infof(`
      _     _            ____       
     | |   (_)_   _____ / ___| ___  

@@ -90,12 +90,6 @@ func NewServer(h av.Handler, getter av.GetWriter) *Server {
 
 // Serve serves http requests
 func (s *Server) Serve(listener net.Listener) (err error) {
-	defer func() {
-		if r := recover(); r != nil {
-			log.Error("rtmp serve panic: ", r)
-		}
-	}()
-
 	for {
 		var netconn net.Conn
 		netconn, err = listener.Accept()
@@ -432,12 +426,6 @@ func (v *VirReader) SaveStatics(streamid uint32, length uint64, isVideoFlag bool
 
 // Read read to packet
 func (v *VirReader) Read(p *av.Packet) (err error) {
-	defer func() {
-		if r := recover(); r != nil {
-			log.Warning("rtmp read packet panic: ", r)
-		}
-	}()
-
 	v.SetPreTime()
 	var cs core.ChunkStream
 	for {
